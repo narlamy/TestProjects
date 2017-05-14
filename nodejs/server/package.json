@@ -1,0 +1,37 @@
+{
+  "name": "Server",
+  "version": "0.1.0",
+  "description": "TestApp",
+  "main": "ServerApp.js",
+  "author": {
+    "name": "Narlamy",
+    "email": "narlamy.cho@gmail.com"
+  },
+  "~~repository": {
+    "type": "svn",
+    "url": "https://192.168.0.200/svn/Project_SC/trunk"
+  },
+  "dependencies": {
+    "async": "^1.5.2",
+    "base64url": "^1.0.6",
+    "body-parser": "^1.15.0",
+    "commander": "^2.9.0",
+    "compression": "^1.0.0",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "heapdump": "^0.3.7",
+    "node-slack": "0.0.7",
+    "passport": "^0.3.2",
+    "passport-google": "^0.3.0",
+    "slack-winston": "0.0.3",
+    "uuid": "^2.0.1",
+    "winston": "^1.1.2",
+    "winston-mongodb": "^1.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.0",
+    "request": "^2.74.0",
+    "should": "^10.0.0"
+  }
+}

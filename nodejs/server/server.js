@@ -105,7 +105,7 @@ class ServerApp
                     var reqFunc = require(PACKET_CLASS_DIR + filename);
                     if (reqFunc) {
                         
-                        console.log(prefix + ' : ' + path);
+                        console.log('[REG] ' + prefix + ' : ' + path);
                         
                         if (prefix == PRE_WORD + 'post') app.post('/' + path, reqFunc);
                         else if (prefix == PRE_WORD + 'get') app.get('/' + path, reqFunc);
@@ -181,7 +181,6 @@ class ServerApp
         // 게임 포트 설정
         var port = Config.Port || DEFAULT_PORT;
         
-        console.log('_RUN')
         self.ShowTitle(port, function () {
             
             // HTTP 서버 구동
@@ -211,7 +210,6 @@ class ServerApp
 
     // 실행
     static Run() {
-        console.log('START')
         var serverInst = new ServerApp();
         serverInst._Run();
         return serverInst;

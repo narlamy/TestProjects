@@ -16,33 +16,32 @@ module.exports = function (request, response) {
             id: request.body['id'] || -1,
             name: request.body['name'] || 'unknown'
         }
-    // 
-    // var id = requestData.id || -1;
-    // var name = requestData.name || '?'
+        
     var id = request.body.id || -1;
     var name = request.body.name || '?'
     //console.log('ID = '+ id +  '\nName = ' + name);
 
-    requestData.RET = {
-        id : id,
-        name : name
-    }
-
     if(response.SendProtob)  {
 
-        // 내부에서 protocol buffer 로 만들어서 보냄
+        // ProtocolBuffer message 인스턴스를 이용해서
+        // response data 전송
+        
         var Sample = require('../Protocols/Sample_pb').Sample;
         var sample = new Sample();
-        sample.setId(9988)
-        sample.setName('hohoho')
+        sample.setId(id)
+        sample.setName(name)
         response.SendProtob(sample);
     }
     else {
         
-        // 모듈 호출해서 객체 생성 팔요
+        // 정말 테스트 코드
+        // 직접 JSON 데이터 만들어서 반환
+        requestData.RET = {
+            id : id,
+            name : name
+        }
 
         response.status(200)
         response.json(requestData);
-        //response.json('{ "Error": 0, "ReponseName" : "_unknown" }')
     }
 }

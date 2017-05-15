@@ -85,11 +85,11 @@ var attachMessage = function(req, res, message,  copyToBody) {
         else {
 
             // 프로토콜 버퍼 메세지 객체를 Base64 문자열로 전달합니다.
-            
+            let retObj = protob_messag.toObject();
             let buf = protob_messag.serializeBinary();
-            let base64Text = buf.toString('base64');
+            let base64Text = Buffer.from(buf, 'utf8').toString('base64')
             let name = protob_messag.protoName || "";
-            let output = { ErrorCode: errCode, __pbDat : base64Text, __pbName : name }
+            let output = { ErrorCode: errCode, __pbDat : base64Text, __pbName : name, __debug: retObj }
             this.json(output);   
         }
     }

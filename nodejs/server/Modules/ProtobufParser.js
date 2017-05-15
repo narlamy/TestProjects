@@ -4,7 +4,7 @@
 module.exports = function(req, res, next) {
 
     var encode = req.headers ? req.headers.encode : null;
-    if(encode == 'protobuf') {
+    if(encode == 'pb') {
 
         let protobufDecorder = require('./ProtobufDecorder');
                 

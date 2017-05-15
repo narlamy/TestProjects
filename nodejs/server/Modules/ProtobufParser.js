@@ -1,35 +1,45 @@
 'use strict'
 
+// Protocol Buffer 형식의 패킷을 파싱합니다.
 module.exports = function(req, res, next) {
 
-    //console.log('[CheckProtob] : ' + req.path);
-
     var encode = req.headers ? req.headers.encode : null;
-    if(encode == 'protobuf') {
+    if(encode == 'pb') {
 
-        // protocol buffer 데이터이므로  
-        
-        let BIN_KEY = '__pbDat'
-        let NAME_KEY = '__pbName'
+        let protobufDecorder = require('./ProtobufDecorder');
+                
+        let conetntType = req.headers['conent-type'];
+        if(conetntType === 'meta' || conetntType === 'application/octet-stream') {
 
-        let encodedText = req.body[BIN_KEY];
-        let protoName = req.body[NAME_KEY] || '';
-            
-        if(encodedText) {
+            // binary
+            var getRawBody = require('raw-body');
 
-            req.body[BIN_KEY] = null;
-            req.body[NAME_KEY] = null;
+            getRawBody(req, {
+                length: req.headers['content-length']
+            }, function (err, buf) {
+                
+                if (err)
+                    return next(err)
+                protobufDecorder.createMessage(req.path, buf, function(err, message) {
 
-            let protobufDecorder = require('./ProtobufDecorder');
+                    if(!err)
+                        protobufDecorder.attachMessage(req, res, message, true);
 
-            protobufDecorder.parseFromBase64(protoName, encodedText, function(err, message){
-                protobufDecorder.attachMessage(req, res, message, true);
+                    if(!req.body)
+                        req.body = {}
+
+                    return next();
+                })
+            })
+        } else {
+
+            // text 기반인 경우        
+            protobufDecorder.parseFrom(req, function(err, message){   
+
+                if(!err)
+                    protobufDecorder.attachMessage(req, res, message, true);
                 return next();
             });
-
-        } else {
-            // 키가 없어서 프로토콜 버퍼 파싱 불가, 그대로 진행
-            return next();
         }
     }
     else {

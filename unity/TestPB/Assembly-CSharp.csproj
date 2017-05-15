@@ -70,10 +70,10 @@
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
  <Reference Include="Newtonsoft.Json">
- <HintPath>/Users/MyeongGeun/Projects/unity/TestPB/Assets/PlugIns/Newtonsoft.Json.dll</HintPath>
+ <HintPath>/Users/MyeongGeun/Projects/TestProtob/unity/TestPB/Assets/PlugIns/Newtonsoft.Json.dll</HintPath>
  </Reference>
  <Reference Include="protobuf">
- <HintPath>/Users/MyeongGeun/Projects/unity/TestPB/Assets/PlugIns/protobuf.dll</HintPath>
+ <HintPath>/Users/MyeongGeun/Projects/TestProtob/unity/TestPB/Assets/PlugIns/protobuf.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

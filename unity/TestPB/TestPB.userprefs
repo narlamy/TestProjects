@@ -1,10 +1,10 @@
 ﻿<Properties StartupConfiguration="{ED51C28C-F28B-DA24-C60E-99C3CE36F7E8}|단위 테스트">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Modules.Network/EventDefines.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Modules.Network/ImpSender.cs">
     <Files>
-      <File FileName="Assets/Scripts/Modules.Network/ImpSender.cs" Line="23" Column="13" />
-      <File FileName="Assets/Scripts/Modules.Network/EventDefines.cs" Line="17" Column="14" />
-      <File FileName="../../../../../../Volumes/Seagate Backup Plus Drive/JobProjects/Project_SC/Client/GameModules/Network/Net/WebServer/HttpWebServer.cs" Line="65" Column="9" NotebookId="1" />
+      <File FileName="Assets/Scripts/Modules.Network/ImpSender.cs" Line="91" Column="9" />
+      <File FileName="Assets/Scripts/Modules.Network/EventDefines.cs" Line="15" Column="32" />
+      <File FileName="../../../../../../Volumes/Seagate Backup Plus Drive/JobProjects/Project_SC/Client/GameModules/Network/Net/WebServer/HttpWebServer.cs" Line="12" Column="15" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

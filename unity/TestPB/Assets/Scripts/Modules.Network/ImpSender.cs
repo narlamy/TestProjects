@@ -678,13 +678,58 @@ namespace N2.Network
                 }
             }
         }
-        #endregion
+		#endregion
 
-        #region ERROR
-        /// <summary>
-        /// 일반적인 에러
-        /// </summary>
-        void GeneralError(System.Exception e, RequestPacket reqPacket, OnResponse onResponse)
+
+		#region 응답 패킷 생성 및 로그
+		/// <summary>
+		/// 응답받은 패킷의 내용을 로그로 출력합니다.
+		/// </summary>
+		void WritePacketLog_(RequestPacket reqPacket, HttpStatusCode statusCode, string content)
+		{
+			NetLogger.Instance.LogWarning("[WebServer] Response error (Status={1}({2}), RequestPacket=\"{3}\") : \"{0}\"",
+				content, statusCode, (int)statusCode, reqPacket.GetType().Name);
+		}
+
+		/// <summary>
+		/// 응답받은 패킷을 내용을 가지고 적절한 ResponsePacket 인스턴스를 생성합니다.
+		/// </summary>
+		ResponsePacket GenerateResponsePacket_(RequestPacket request, Stream responseStream)
+		{
+			if (responseStream != null)
+			{
+				using (TextReader reader = new StreamReader(responseStream))
+				{
+					string content = reader.ReadToEnd();
+					return GenerateResponsePacket_(request, content);
+				}
+			}
+			else
+			{
+				return request.CreateResponse(ServerError.StreamError);
+			}
+		}
+
+		ResponsePacket GenerateResponsePacket_(RequestPacket request, string content, int contentEmptyError = ServerError.ParsingError)
+		{
+			if (string.IsNullOrEmpty(content))
+			{
+				NetLogger.Instance.Log("[WebServer] responseStream에서 문자열을 얻어 올 수 없습니다. (ReqType=\"" + request.GetType().Name + "\")");
+				return request.CreateResponse(contentEmptyError);
+			}
+			else
+			{
+				// 정상적으로 진행
+				return request.CreateResponse(content);
+			}
+		}
+		#endregion
+
+		#region ERROR
+		/// <summary>
+		/// 일반적인 에러
+		/// </summary>
+		void GeneralError(System.Exception e, RequestPacket reqPacket, OnResponse onResponse)
         {
             if (IsWriteLog)
             {

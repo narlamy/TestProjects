@@ -93,7 +93,7 @@ namespace N2.Network
                 {
                     if (reader == null)
                     {
-                        Dev.Logger.LogWarning("[PacketTable] loading failed => " + PATH);
+                        //Dev.Logger.LogWarning("[PacketTable] loading failed => " + PATH);
                         return;
                     }
 
@@ -118,7 +118,7 @@ namespace N2.Network
             }
             else
             {
-                Dev.Logger.LogError("[PacketTable] cannot load table file => " + PATH);
+                //.LogError("[PacketTable] cannot load table file => " + PATH);
             }
         }
 

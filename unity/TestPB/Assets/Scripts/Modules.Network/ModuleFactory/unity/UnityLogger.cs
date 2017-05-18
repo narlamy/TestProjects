@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace N2.Network
 {
-    class UnityLogger : INetLogger
+    class UnityLogger : Dev.ILogger
     {
+        public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public void Log(string format, params object[] p)
         {
             if(p!=null && p.Length>0)
@@ -26,6 +29,16 @@ namespace N2.Network
                 Debug.LogErrorFormat(format, p);
             else
                 Debug.LogError(format);
+        }
+
+        public void LogException(Exception e)
+        {
+            Debug.LogException(e);
+        }
+
+        public void Assert(bool condition, string msg, params object[] p)
+        {
+            Debug.AssertFormat(condition, msg, p);
         }
     }
 }

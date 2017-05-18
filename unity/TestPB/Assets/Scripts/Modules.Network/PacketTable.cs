@@ -10,25 +10,10 @@ namespace N2.Network
     {
         static IPacketTable mInstance = null;
 
-        static public IPacketTable Instance
+        static public IPacketTable Instance { get { return mInstance; } }
+        static PacketTable()
         {
-            get
-            {
-                if (mInstance == null)
-                {
-                    switch (PlatformSelector.Platform)
-                    {
-                    case Platform.General:
-                        mInstance = new GeneralPacketTable();
-                        break;
-
-                    case Platform.Unity:
-                        mInstance = new UnityPacketTable();
-                        break;
-                    }
-                }
-                return mInstance;
-            }
+            mInstance = ModuleFactory.CreatePacketTable();
         }
     }
 }

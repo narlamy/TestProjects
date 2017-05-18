@@ -2,65 +2,27 @@
 using System;
 using System.Collections.Generic;
 
-namespace Net.Network
+namespace N2.Network
 {
     public interface ICallbackExecuter
     {
         void Execute();
     }
 
-    public class CallbackAgent : MonoBehaviour
+    public interface ICallbackAgent
     {
-        private static CallbackAgent mInstance = null;
-        static public CallbackAgent Instance
+        void Call(ICallbackExecuter callback);
+    }
+
+    public static class CallbackAgent
+    {
+        private static ICallbackAgent mInstance;
+        public static ICallbackAgent Instance { get { return mInstance; } }
+
+        static CallbackAgent()
         {
-            get 
-            {
-                if(object.ReferenceEquals(mInstance, null))
-                {
-                    var go = new GameObject("$CallbackAgent");
-                    mInstance = go.AddComponent<CallbackAgent>();
-
-                    go.hideFlags = HideFlags.DontUnloadUnusedAsset;
-                }
-                return mInstance; 
-            }
-        }
-
-		private Queue<ICallbackExecuter> mUpdateQueue = new Queue<ICallbackExecuter>();
-
-        void Update()
-        {
-            // 에디
-            _UpdateCallbacks();
-        }
-
-        void _UpdateCallbacks()
-        {
-            // step1 : into update queue from waiting queue
-            lock(mWaitingQueue)
-            {
-                while(mWaitingQueue.Count > 0)
-                {
-                    var callback = mWaitingQueue.Dequeue();
-                    mUpdateQueue.Enqueue(callback);
-                }
-            }
-
-            while(mUpdateQueue.Count > 0)
-            {
-                var callback = mUpdateQueue.Dequeue();
-                callback.Execute();
-            }
-        }
-
-		private Queue<ICallbackExecuter> mWaitingQueue = new Queue<ICallbackExecuter>();
-		public void Add(ICallbackExecuter callback)
-        {
-            lock (mWaitingQueue)
-            {
-                mWaitingQueue.Enqueue(callback);
-            }
+            mInstance = ModuleFactory.CreateCallbackAgent();
         }
     }
+
 }

@@ -1,0 +1,21 @@
+syntax="proto3";
+import "./_Header.proto"; 
+option optimize_for = LITE_RUNTIME;
+package Lua.User;
+
+// request
+message ReqPerson
+{
+	_ReqHeader Header = 1;
+	string ID = 10;
+}
+
+// response
+message ResPerson
+{
+	reserved 100 to 999, 10;
+	int32 ErrCode = 1;
+
+	int32 Age = 11;
+	string Name = 12;
+}

@@ -1,0 +1,12 @@
+syntax="proto3";
+
+package Lua;
+message _ReqHeader
+{	
+	int32 Category = 1;
+}
+
+message _ResHeader
+{	
+	int32 ErrCode = 1;
+}

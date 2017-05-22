@@ -4,26 +4,18 @@ option optimize_for = LITE_RUNTIME;
 package Lua.User;
 
 // request
-message ReqPerson
+message ReqPerson1
 {
 	_ReqHeader Header = 1;
 	string ID = 10;
 }
 
 // response
-message ResPerson
+message ResPerson1
 {
 	reserved 100 to 999, 10;
 	int32 ErrCode = 1;
 
 	int32 Age = 11;
 	string Name = 12;
-
-	message PrivateInfo
-	{
-		int32 Height = 1;
-		int32 Weight = 2;
-	}
-
-	PrivateInfo Private = 20; 
 }

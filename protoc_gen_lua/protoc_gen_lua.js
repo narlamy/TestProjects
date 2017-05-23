@@ -2,22 +2,6 @@
 
 const fs = require('fs')
 const path = require('path');
-let TYPE = {
-    Fixed32 : 0,    
-    Fixed64 : 0,
-    Sfixed32 : 0,    
-    Sfixed64 : 0,
-    Int32 : 5,
-    Int64 : 6,
-    Sint32 : 0,
-    Sint64 : 0,
-    Float : 0,
-    Double : 0,
-    Bool : 0,
-    String : 9,
-    Bytes : 0,
-    Struct : 11
-}
 
 /*
 proto.google.protobuf.FieldDescriptorProto.Type = {
@@ -42,9 +26,9 @@ proto.google.protobuf.FieldDescriptorProto.Type = {
 };
  */
 
-var PB_TYPE ;
+var PB_TYPE = null;
 
-function GetProtoTypeDefine() {
+function InitProtoTypeDefine() {
     let pb = require('google-protobuf/google/protobuf/descriptor_pb')
     PB_TYPE = pb.FieldDescriptorProto.Type;
 }
@@ -53,13 +37,15 @@ function GetProtoTypeDefine() {
 class LuaGen {
 
     constructor() {
+
+        InitProtoTypeDefine()
+
         this._definedMessages = {};
         this._outputText = "";
         this._SND_METHOD = 'CS.N2.Network.LuaSender.Send'
         this._PB_CALC_NAMESPACE = 'CS.N2.Network.LuaSender.'
         this._descriptors = []
         this._dependecies = []
-        GetProtoTypeDefine()
     }
 
     // protoc plugin으로 입력받은 binary data를 parsing해서 
@@ -126,7 +112,7 @@ class LuaGen {
 
     AddDescriptor(desc) {
 
-        // 모든 디스크립터 수집
+        // 디스크립터 등록 (proto 파일 단위)
         this._descriptors.push(desc)
 
         // 메세지 이름으로 빠르게 검색할 수 있는 커랙터 처리
@@ -153,19 +139,28 @@ class LuaGen {
         if(reqMsg && resMsg) {
 
             // defines
-            //self.WriteExternMessage(desc)
-            self.WriteMessage(reqMsg);
-            self.WriteMessage(resMsg);
+            self.WriteMessageDefine(reqMsg);
+            self.WriteMessageDefine(resMsg);
             
             // methods
-            self.WriteMethodProperties(reqMsg)
-            self.WriteMethodSend(reqMsg)
             self.WriteMethodGetIndex(reqMsg)
+            self.WriteMethodGetIndex(resMsg)
+
+            self.WriteMethodProperties(reqMsg, true)
+            self.WriteMethodProperties(resMsg, false)
+            
             self.WriteMethodCalcLength(reqMsg);
             self.WriteMethodCalcLength(resMsg);
-            self.WriteAttachRes(reqMsg, resMsg);        
-            self.WriteNew(reqMsg)
+            
+            self.WriteMethodNew(reqMsg)
+            self.WriteMethodNew(resMsg)
 
+            // Request 객체에 맴버로 Response 객체를 연결
+            self.WriteResponsAttaching(reqMsg, resMsg);
+            
+            // request에만 제공
+            self.WriteMethodSend(reqMsg)
+            
             // export
             self.WriteExport(reqMsg)
         } 
@@ -174,10 +169,13 @@ class LuaGen {
         return self._outputText;       
     }
 
+    // 해당 이름의 message를 검색합니다.
+    // 메세지 이름은 Package 이름이 포함 된 full name
     FindMessage(msgName) {
         return this._definedMessages[msgName];
     }
 
+    // 등록 된 Descriptor를 전부 검색해서 message 이름에 preWord가 포함되는 message를 검색
     ScanMessage(preWord, dependencyName) {
 
         for(let k in this._descriptors) {
@@ -271,19 +269,19 @@ class LuaGen {
         this._outputText += 
             'function ' + msgName + ':Set' + fieldName + '(' + varName + ')\n' +
             '  self.' + fieldName + '=' + varName + ';\n  return self;\n' +
-            'end\n'
+            'end\n\n'
     }
 
     _MakeGetFunction(msgName, fieldName) {
         this._outputText += 
             'function ' + msgName + ':Get' + fieldName + '()\n' +
             '  return self.' + fieldName + ';\n' +
-            'end\n'
+            'end\n\n'
     }
 
-    WriteAttachRes(reqMsg, resMsg) {
+    WriteResponsAttaching(reqMsg, resMsg) {
 
-        this._outputText += reqMsg.getName() + '.Res=' + resMsg.getName() + ';\n'
+        this._outputText += reqMsg.getName() + '.Res = ' + resMsg.getName() + ';\n\n'
     }
 
     // 데이터가 저장 될 크기를 계산합니다.
@@ -343,13 +341,13 @@ class LuaGen {
                     //self._outputText += self._WriteCalcLine('ComputeBoolSize', fieldName)
                     break;
 
-                case TYPE.GROUP:
+                case PB_TYPE.TYPE_GROUP:
                     //self._outputText += self._WriteCalcLine('ComputeInt32Size', fieldName)
                     break;
             }
         } 
 
-        self._outputText += '  return size;\n' + 'end\n'
+        self._outputText += '  return size;\n' + 'end\n\n'
     }
 
     _WriteCalcLine(method, fieldName) {
@@ -360,7 +358,7 @@ class LuaGen {
         this._outputText += 
             'function ' + msg.getName() + ':Send(onRes)\n' + 
             '  ' + this._SND_METHOD + '(self)\n' +
-            'end\n'
+            'end\n\n'
     }
 
     WriteMethodGetIndex(msg) {
@@ -370,7 +368,7 @@ class LuaGen {
         
         self._outputText += 'function ' + msg.getName() + ':GetIndex(fieldName)\n'        
         self._WriteGetIndexCondition(msg, isFirst)
-        self._outputText += '\nend\n';
+        self._outputText += '  return -1;\n' + 'end\n\n';
     }
 
     _WriteGetIndexCondition(msg, isFirst) {
@@ -392,50 +390,61 @@ class LuaGen {
         }
     }
 
-    WriteNew(msg) {
+    WriteMethodNew(msg) {
+        let msgName = msg.getName()
         this._outputText += 
-            'function ' + msg.name + ':new()\n' + 
-            '  return setmetatable(self or {}, {_index=' + msg.getName() + '});\n' +
-            'end\n';
+            'function ' + msgName + ':new()\n' + 
+            '  return setmetatable(self or {}, {_index=' + msgName + '});\n' +
+            'end\n\n';
     }
 
     WriteExport(msg) {
         if(!msg) return;
-        this._outputText += '\n' + 'return ' + msg.getName() + '.new();'
+        this._outputText += '\n' + 'return ' + msg.getName() + '.new();\n'
     }
 
-    Blik(space) {        
-        let o = ''
-        let r = space;
-        while(r-- > 0) o += '  '
-        return o
+    Blink(step) {        
+        let out = ''
+        let n = step || 0
+        while(n-- > 0) out += '  '
+        //return '<' + out + (out.length).toString() + '>'
+        return out;
     }
 
     // 프로토콜 루아 테이블 (맴버 정의 및 초기화)
-    WriteMessage(msg, step) {
+    WriteMessageDefine(msg, step) {
 
         if(!msg || !msg.getFieldList) return;
 
         let self = this;
-        let isSubMessage = step ? true : false;
         let msgName = msg.getName()
+        
+        if(step==undefined) step = 0;
 
-        // 맴버 정의
+        // 맴버 정의 
+        // 메세지 정의 일 경우에만 메세지 이름을 적용시키고 
+        // 서브 메세지인 경우에는 블록만 정의합니다.
         // TYPE = { M1=0, M2=0 }
-        self._outputText += (isSubMessage ? '' : msgName) + ' = {\n  ';
+        self._outputText += (step==0 ? msgName : '') + ' = {\n';
+        
         let isFirst = true;
         let fields = msg.getFieldList()
 
         for(let k in fields) {
 
-            self._outputText += self.Blik(step)
-
-            if(!isFirst) self._outputText += ', '
+            let field = fields[k] 
+            
+            // 이전 데이터 정의와 구분
+            if(!isFirst) self._outputText += ',\n'
             else  isFirst = false
 
-            let field = fields[k] 
+            // 깊이에 따른 공백 처리
+            self._outputText += self.Blink(step+1)
+
+            // 맴버 이름 출력
             self._outputText += field.getName()
 
+            // 타입 이름 : Message인 경우에만 유효
             let typeName = field.getTypeName();
 
             // if(typeName)
@@ -443,31 +452,32 @@ class LuaGen {
 
             let sub = self.FindMessage(typeName)
             if(sub) {
-                self.WriteMessage(sub, step ? step+1 : 1)
+                // 서브 메세지 
+                self.WriteMessageDefine(sub, step+1)
             }
             else {
-                // general type
-                self._outputText += '=' + self._getInitText(field)
+                // 값 출력
+                self._outputText += ' = ' + self._getInitText(field)
             }
         }
 
-        if(isSubMessage)
-            self._outputText += self.Blik(step) + '\n}';
-        else 
+        if(step > 0)
+            self._outputText += '\n' + self.Blink(step) + '}';
+        else
             self._outputText += '\n}\n\n';
     }
 
     _getInitText (field) {
 
         switch(field.getType()) {
-            case PB_TYPE.INT64:
-            case PB_TYPE.INT32:
-            case PB_TYPE.UINT64:
-            case PB_TYPE.UINT32:
-            case PB_TYPE.FIXED64:
-            case PB_TYPE.FIXED32:
-            case PB_TYPE.SFIXED64:
-            case PB_TYPE.SFIXED32:
+            case PB_TYPE.TYPE_INT64:
+            case PB_TYPE.TYPE_INT32:
+            case PB_TYPE.TYPE_UINT64:
+            case PB_TYPE.TYPE_UINT32:
+            case PB_TYPE.TYPE_FIXED64:
+            case PB_TYPE.TYPE_FIXED32:
+            case PB_TYPE.TYPE_SFIXED64:
+            case PB_TYPE.TYPE_FIXED32:
                 return '0';
 
             case PB_TYPE.TYPE_FLOAT:

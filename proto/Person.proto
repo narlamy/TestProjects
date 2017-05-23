@@ -18,11 +18,11 @@ message ResPerson
 
 	int32 Age = 11;
 	string Name = 12;
-
+	
 	message PrivateInfo
 	{
-		int32 Height = 1;
-		int32 Weight = 2;
+		float Height = 1;
+		fixed32 Weight = 2;
 	}
 
 	PrivateInfo Private = 20; 

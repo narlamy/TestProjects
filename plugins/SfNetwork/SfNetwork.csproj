@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{95A210C0-B0CA-4016-BC44-059FEA900F0D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SF</RootNamespace>
+    <AssemblyName>SfNetwork</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LitJson">
+      <HintPath>..\extern_lib\LitJson.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf">
+      <HintPath>..\extern_lib\protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\extern_lib\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="xLua">
+      <HintPath>..\extern_lib\xLua.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\GameModule.cs" />
+    <Compile Include="Common\ILogger.cs" />
+    <Compile Include="Common\JsonConvterList.cs" />
+    <Compile Include="Common\JsonTypeConverter.cs" />
+    <Compile Include="Common\Logger.cs" />
+    <Compile Include="Network\Attributes\IgnoreConnectingAttribute.cs" />
+    <Compile Include="Network\Attributes\IgnoreErrorEventAttribute.cs" />
+    <Compile Include="Network\Attributes\IgnoreRetryAttribute.cs" />
+    <Compile Include="Network\Attributes\PacketGroupAttribute.cs" />
+    <Compile Include="Network\Attributes\PacketRevisionAttribute.cs" />
+    <Compile Include="Network\CallbackAgentUtil.cs" />
+    <Compile Include="Network\CallbackAgent.cs" />
+    <Compile Include="Network\Connection.cs" />
+    <Compile Include="Network\Connections\Connections.cs" />
+    <Compile Include="Network\EventDefines.cs" />
+    <Compile Include="Network\Factory\ConnectionFactory.cs" />
+    <Compile Include="Network\ILogger.cs" />
+    <Compile Include="Network\ImpSender.cs" />
+    <Compile Include="Network\ISocket.cs" />
+    <Compile Include="Network\IServerError.cs" />
+    <Compile Include="Network\Logger.cs" />
+    <Compile Include="Network\LuaSender.cs" />
+    <Compile Include="Network\Factory\ModuleFactory.cs" />
+    <Compile Include="Network\Factory\unity\CallbackAgentObject.cs" />
+    <Compile Include="Network\Factory\unity\UnityLogger.cs" />
+    <Compile Include="Network\Factory\unity\UnityPacketTable.cs" />
+    <Compile Include="Network\PacketTable.cs" />
+    <Compile Include="Network\Packet\IPacketTable.cs" />
+    <Compile Include="Network\Packet\PacketErrorResponse.cs" />
+    <Compile Include="Network\Packet\PacketFactory.cs" />
+    <Compile Include="Network\Packet\RequestBinary.cs" />
+    <Compile Include="Network\Packet\RequestGeneric.cs" />
+    <Compile Include="Network\Packet\RequestPacket.cs" />
+    <Compile Include="Network\Packet\ResponseBinary.cs" />
+    <Compile Include="Network\Packet\ResponseGeneric.cs" />
+    <Compile Include="Network\Packet\ResponsePacket.cs" />
+    <Compile Include="Network\Packet\PacketFactoryUtil.cs" />
+    <Compile Include="Network\Packet\ServerError.cs" />
+    <Compile Include="Network\Packet\SocketFactory.cs" />
+    <Compile Include="Network\HttpReqPool.cs" />
+    <Compile Include="Network\HttpReqData.cs" />
+    <Compile Include="Network\Sender.cs" />
+    <Compile Include="Network\ServerConnections.cs" />
+    <Compile Include="Network\Sockets\SocketDummy.cs" />
+    <Compile Include="Network\Sockets\SocketTcp.cs" />
+    <Compile Include="Network\Sockets\SocketHttp.cs" />
+    <Compile Include="Network\Sockets\SocketFtp.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /R /E /I $(TargetDir)$(TargetName).* $(ProjectDir)\..\..\unity\TestPB\Assets\DLL\</PostBuildEvent>
+  </PropertyGroup>
+</Project>

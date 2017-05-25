@@ -75,6 +75,46 @@
  <Reference Include="protobuf">
  <HintPath>/Users/MyeongGeun/Projects/TestProtob/unity/TestPB/Assets/PlugIns/protobuf.dll</HintPath>
  </Reference>
+ <Compile Include="Assets\Scripts\Modules.Network\Sender.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\CallbackAgent.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Attributes\IgnoreConnectingAttribute.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Attributes\IgnoreErrorEventAttribute.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Attributes\IgnoreRetryAttribute.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Attributes\PacketGroupAttribute.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Attributes\PacketRevisionAttribute.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Packet\RequestPacket.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Packet\ResponsePacket.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Packet\PacketErrorResponse.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\IServerError.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\ILogger.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Logger.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Packet\PacketFactory.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Packet\ResponsePacketFactory.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\ModuleFactory\unity\UnityLogger.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\ModuleFactory\unity\UnityPacketTable.cs" />
+ <Compile Include="Assets\Scripts\Modules.Common\GameModule.cs" />
+ <Compile Include="Assets\Scripts\Modules.Common\ILogger.cs" />
+ <Compile Include="Assets\Scripts\Modules.Common\Logger.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\ModuleFactory\unity\CallbackAgentObject.cs" />
+ <Compile Include="Assets\Scripts\Modules.Common\JsonTypeConverter.cs" />
+ <Compile Include="Assets\Scripts\Modules.Common\JsonConvterList.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\ImpSender.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Packet\ServerError.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Packet\IPacketTable.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\PacketTable.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\ModuleFactory\ModuleFactory.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\Connection.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\ISender.cs" />
+ <Compile Include="Assets\Scripts\Modules.Network\EventDefines.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Scripts\Modules.Network\" />
+    <Folder Include="Assets\Scripts\Modules.Network\Attributes\" />
+    <Folder Include="Assets\Scripts\Modules.Network\Sockets\" />
+    <Folder Include="Assets\Scripts\Modules.Network\Packet\" />
+    <Folder Include="Assets\Scripts\Modules.Common\" />
+    <Folder Include="Assets\Scripts\Modules.Network\ModuleFactory\" />
+    <Folder Include="Assets\Scripts\Modules.Network\ModuleFactory\unity\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

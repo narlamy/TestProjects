@@ -59,18 +59,18 @@ class ServerApp
         let packetErrHandler = require('./Modules/PacketErrorHandler');
         app.use(packetErrHandler);
 
-        // Step1. 패킷 암호화 해제
-        let packetDecorder = require('./Modules/PacketDecorder');
-        app.use(packetDecorder);
-
-        // Step2. 패킷 세션 확인 
-        // 세션 토큰이 쿠키에 저장되어 전달 받는 다면 암호화 루틴 이전에 처리 가능 
-        let sessionVerifier = require('./Modules/SessionVerifier');
-        app.use(sessionVerifier);
-
-        // Step3. 순수 JOSN 데이터인지 
+        // Step1. 프로토콜 버퍼 사용중이라면 파싱
         let protobufParser = require('./Modules/ProtobufParser');
         app.use(protobufParser);
+        
+        // // Step2. 패킷 암호화 해제
+        // let packetDecorder = require('./Modules/PacketDecorder');
+        // app.use(packetDecorder);
+
+        // Step3. 패킷 세션 확인 
+        // 세션 토큰이 쿠키에 저장되어 전달 받는 다면 암호화 루틴 이전에 처리 가능 
+        let sessionVerifier = require('./Modules/SessionVerifier');
+        app.use(sessionVerifier);        
     }
 
     //==============================================================================
@@ -132,7 +132,7 @@ class ServerApp
             var output = {
                 Message : 'Unknown request type : "' + request.path + '"'
             }
-            logger.warn('[Game] unknown request : ' + request.path);
+            console.warn('[Game] unknown request : ' + request.path);
             response.status(403);
             response.json(output);
         });

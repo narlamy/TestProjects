@@ -1,0 +1,10 @@
+D:\Projects\TestPB\plugins\SfNetwork\bin\Debug\SfNetwork.dll
+D:\Projects\TestPB\plugins\SfNetwork\bin\Debug\SfNetwork.pdb
+D:\Projects\TestPB\plugins\SfNetwork\obj\Debug\SfNetwork.csprojResolveAssemblyReference.cache
+D:\Projects\TestPB\plugins\SfNetwork\obj\Debug\SfNetwork.dll
+D:\Projects\TestPB\plugins\SfNetwork\obj\Debug\SfNetwork.pdb
+D:\Projects\TestPB\plugins\SfNetwork\bin\Debug\LitJson.dll
+D:\Projects\TestPB\plugins\SfNetwork\bin\Debug\protobuf.dll
+D:\Projects\TestPB\plugins\SfNetwork\bin\Debug\UnityEngine.dll
+D:\Projects\TestPB\plugins\SfNetwork\bin\Debug\xLua.dll
+D:\Projects\TestPB\plugins\SfNetwork\bin\Debug\protobuf.pdb

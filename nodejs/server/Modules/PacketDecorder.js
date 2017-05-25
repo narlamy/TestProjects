@@ -1,7 +1,8 @@
+'use strict'
 
 module.exports = function(req, res, next) {
 
-    if(req.headers.endcoded) {
+    if(req.isType('json') && req.headers.endcoded) {        
         // 암호화 되어 있다면 암호화 해제
         var encoded = req.body['__sab'] || '';
         next();

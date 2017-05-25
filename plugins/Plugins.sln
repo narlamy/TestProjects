@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SfNetwork", "SfNetwork\SfNetwork.csproj", "{95A210C0-B0CA-4016-BC44-059FEA900F0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xLua", "xLua\xLua.csproj", "{6FEB194A-396F-4CE5-8A72-7502908EAEF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LitJson", "LitJson\LitJson.csproj", "{4E6310CD-B47D-4E8F-94A7-810B551C5950}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95A210C0-B0CA-4016-BC44-059FEA900F0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95A210C0-B0CA-4016-BC44-059FEA900F0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95A210C0-B0CA-4016-BC44-059FEA900F0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95A210C0-B0CA-4016-BC44-059FEA900F0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FEB194A-396F-4CE5-8A72-7502908EAEF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FEB194A-396F-4CE5-8A72-7502908EAEF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FEB194A-396F-4CE5-8A72-7502908EAEF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FEB194A-396F-4CE5-8A72-7502908EAEF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6310CD-B47D-4E8F-94A7-810B551C5950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6310CD-B47D-4E8F-94A7-810B551C5950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6310CD-B47D-4E8F-94A7-810B551C5950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6310CD-B47D-4E8F-94A7-810B551C5950}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,6 @@
+D:\Projects\TestPB\plugins\xLua\bin\Release\xLua.dll
+D:\Projects\TestPB\plugins\xLua\bin\Release\xLua.pdb
+D:\Projects\TestPB\plugins\xLua\bin\Release\UnityEngine.dll
+D:\Projects\TestPB\plugins\xLua\obj\Release\xLua.csprojResolveAssemblyReference.cache
+D:\Projects\TestPB\plugins\xLua\obj\Release\xLua.dll
+D:\Projects\TestPB\plugins\xLua\obj\Release\xLua.pdb

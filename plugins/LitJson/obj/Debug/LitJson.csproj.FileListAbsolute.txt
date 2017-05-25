@@ -1,0 +1,5 @@
+D:\Projects\TestPB\plugins\LitJson\bin\Debug\LitJson.dll
+D:\Projects\TestPB\plugins\LitJson\bin\Debug\LitJson.pdb
+D:\Projects\TestPB\plugins\LitJson\obj\Debug\LitJson.csprojResolveAssemblyReference.cache
+D:\Projects\TestPB\plugins\LitJson\obj\Debug\LitJson.dll
+D:\Projects\TestPB\plugins\LitJson\obj\Debug\LitJson.pdb

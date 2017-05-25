@@ -1,29 +1,36 @@
-var _getProtoName = function(path) {
+var getProtoName = function(path) {
 
-    var retName = path.replace('/', '_');
-    
-    if(retName[0] == '_')
-        return retName.substring(1);
-    else 
-        return retName;
+    var tok = path.split('/');
+    return tok[tok.length-1]
+}
+
+var getProtoFileName = function(protoName) {
+
+    return '../Protocols/' + protoName.substring(3) + '_pb.js';
+}
+
+var loadProtoMessage = function (protoName) {
+
+    try {
+        let filePath = getProtoFileName(protoName);
+        let PROTOCOL = require(filePath)
+        return PROTOCOL[protoName];
+    }
+    catch(e) {
+        console.error(e)
+        return null;
+    }
 }
 
 var createMessage = function (path, buf, callback) {
 
-    try {
-        let protoName = _getProtoName(path);
-        let filePath = '../Protocols/' + protoName + '_pb.js';
-        //console.log('[ProtobufDecorder] filePath = "' + filePath + '"')
-        
-        let PROTOCOL = require(filePath)
-        let prototype = PROTOCOL[protoName];
+    let protoName = getProtoName(path);
+    let prototype = loadProtoMessage(protoName);
 
+    if(prototype)
         callback(null, prototype.deserializeBinary(buf));
-    }
-    catch(e) {
-        console.error(e)
-        callback(new Error('protocol file error'), {});
-    }
+    else 
+        callback(new Error('protocol file does not exists it : ' + path));
 }
 
 // base64로 인코딩 된 문자열 입력
@@ -59,7 +66,7 @@ var toBase64 = function(protob_message) {
     return Buffer.toBase64(buf);
 }
 
-var attachMessage = function(req, res, message,  copyToBody) {
+var attachMessage = function(req, res, message, copyToBody) {
 
     // 입력 받은 메세지 인스턴스
     req._protob_message = message;
@@ -78,9 +85,16 @@ var attachMessage = function(req, res, message,  copyToBody) {
             errCode=0;
 
         if(isOption && option.bin) {
+
+            if(protob_messag.ErrCode!=undefined)
+                protob_messag.ErrCode = option.errCode;
+
             // 직접 바이너리로 전달합니다.
-            let buf = protob_messag.serializeBinary();
-            this.send();
+            let bin = protob_messag.serializeBinary();
+            let buf = new Buffer(bin);
+            //this.set('Content-Type', 'n2pb')
+            //console.log('res.send() => ' + new Date())
+            this.send(buf);
         }
         else {
 
@@ -96,6 +110,17 @@ var attachMessage = function(req, res, message,  copyToBody) {
 
     res.SendProtobBin = function(protob_messag, errCode) {
         this._SendBinProtoMessage(protob_messag, { errCode:errCode, bin:true})
+    }
+
+    res._protoName = getProtoName(req.path).replace('Req','Res')
+    res.CreateMessage = function() {
+        let self_res = this
+        let prototype = loadProtoMessage(self_res._protoName);
+        let instance = new prototype();
+        instance.Send = function(option) {
+            self_res.SendProtob(this, option);
+        }
+        return instance;
     }
 
     // body에 protocol buffer message의 프로퍼티를 복사합니다.
@@ -120,7 +145,7 @@ var parseFrom = function(req, callback) {
     let NAME_KEY = '__pbName'
 
     let encodedText = req.body[BIN_KEY];
-    let protoName = req.body[NAME_KEY] || _getProtoName(req.path);
+    let protoName = req.body[NAME_KEY] || getProtoName(req.path);
 
     if(encodedText) {
 
